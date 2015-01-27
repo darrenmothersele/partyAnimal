@@ -29,7 +29,7 @@ void ofApp::setup(){
     finder.setup("haarcascade_frontalface_default.xml");
     
     
-    mask.loadImage("mask.jpg");
+    mask.loadImage("mask2.png");
     
 }
 
@@ -58,6 +58,7 @@ void ofApp::draw(){
     img.draw(0, 0, ofGetWidth(), ofGetHeight());
     
     for(unsigned int i = 0; i < finder.blobs.size(); i++) {
+
         ofRectangle cur = finder.blobs[i].boundingRect;
         
        // ofRect(ofMap(cur.x, 0, 320, 0, ofGetWidth()), ofMap(cur.y, 0, 240, 0, ofGetHeight()),
