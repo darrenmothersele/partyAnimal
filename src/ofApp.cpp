@@ -29,6 +29,8 @@ void ofApp::setup(){
     finder.setup("haarcascade_frontalface_default.xml");
     
     
+    mask.loadImage("mask.jpg");
+    
 }
 
 //--------------------------------------------------------------
@@ -53,11 +55,16 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     //vidGrabber.draw(20,20);
-    img.draw(0,0);
+    img.draw(0, 0, ofGetWidth(), ofGetHeight());
     
     for(unsigned int i = 0; i < finder.blobs.size(); i++) {
         ofRectangle cur = finder.blobs[i].boundingRect;
-        ofRect(cur.x, cur.y, cur.width, cur.height);
+        
+       // ofRect(ofMap(cur.x, 0, 320, 0, ofGetWidth()), ofMap(cur.y, 0, 240, 0, ofGetHeight()),
+       //        ofMap(cur.width, 0, 320, 0, ofGetWidth()), ofMap(cur.height, 0, 240, 0, ofGetHeight()));
+        
+        mask.draw(ofMap(cur.x, 0, 320, 0, ofGetWidth()), ofMap(cur.y, 0, 240, 0, ofGetHeight()),
+                  ofMap(cur.width, 0, 320, 0, ofGetWidth()), ofMap(cur.height, 0, 240, 0, ofGetHeight()));
     }
 }
 

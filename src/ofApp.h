@@ -28,4 +28,6 @@ class ofApp : public ofBaseApp{
     ofImage img;
     ofxCvHaarFinder finder;
     
+    ofImage mask;
+    
 };
