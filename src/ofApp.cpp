@@ -8,6 +8,9 @@ void ofApp::setup(){
     screenWidth = ofGetWidth();
     screenHeight = ofGetHeight();
     
+    flipVert = false;
+    flipHoriz = true;
+    
     // list video devices to debug console
     // use this to find correct ID for video grabber
     /*
@@ -43,6 +46,7 @@ void ofApp::update(){
         // if video grabber has a new frame
         // grab the image and run face finder
         img.setFromPixels(vidGrabber.getPixelsRef());
+        img.mirror(flipVert, flipHoriz);
         finder.findHaarObjects(img);
     }
 }

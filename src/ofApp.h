@@ -32,4 +32,7 @@ class ofApp : public ofBaseApp{
     
     ofImage mask;
     
+    bool flipVert;
+    bool flipHoriz;
+    
 };
