@@ -34,6 +34,11 @@ void ofApp::setup(){
     // setup face finder with settings from xml file
     finder.setup("haarcascade_frontalface_default.xml");
     
+    // grab first frame
+    img.setFromPixels(vidGrabber.getPixelsRef());
+    img.mirror(flipVert, flipHoriz);
+    finder.findHaarObjects(img);
+    
     // load mask image
     mask.loadImage("mask2.png");
     
