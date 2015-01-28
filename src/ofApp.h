@@ -21,9 +21,11 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     ofVideoGrabber 		vidGrabber;
-    ofTexture			videoTexture;
-    int 				camWidth;
-    int 				camHeight;
+    
+    int camWidth;
+    int camHeight;
+    int screenWidth;
+    int screenHeight;
     
     ofImage img;
     ofxCvHaarFinder finder;
