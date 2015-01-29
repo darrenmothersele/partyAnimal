@@ -1,4 +1,6 @@
 *.app
+*.xcuserdatad*
+xcuserdata
 
 # OS generated files #
 ######################
