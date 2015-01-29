@@ -2,15 +2,15 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
+
     camWidth  = 320;
     camHeight = 240;
     screenWidth = ofGetWidth();
     screenHeight = ofGetHeight();
-    
+
     flipVert = false;
     flipHoriz = true;
-    
+
     // list video devices to debug console
     // use this to find correct ID for video grabber
     /*
@@ -24,24 +24,24 @@ void ofApp::setup(){
         }
     }
     */
-    
+
     // setup grabber on device 0
     vidGrabber.setDeviceID(0);
     vidGrabber.setDesiredFrameRate(60);
     vidGrabber.initGrabber(camWidth,camHeight);
     ofSetVerticalSync(true);
-    
+
     // setup face finder with settings from xml file
     finder.setup("haarcascade_frontalface_default.xml");
-    
+
     // grab first frame
     img.setFromPixels(vidGrabber.getPixelsRef());
     img.mirror(flipVert, flipHoriz);
     finder.findHaarObjects(img);
-    
+
     // load mask image
-    mask.loadImage("mask2.png");
-    
+    mask.loadImage("tiger.png");
+
 }
 
 //--------------------------------------------------------------
@@ -58,10 +58,10 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
+
     // draw image to fit the whole screen
     img.draw(0, 0, ofGetWidth(), ofGetHeight());
-    
+
     for(unsigned int i = 0; i < finder.blobs.size(); i++) {
 
         ofRectangle cur = finder.blobs[i].boundingRect;
@@ -114,6 +114,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
