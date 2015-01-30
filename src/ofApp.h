@@ -29,13 +29,15 @@ class ofApp : public ofBaseApp{
     int screenWidth;
     int screenHeight;
     
+    ofDirectory dir;
+    vector<ofImage> masks;
+    
     ofImage img;
     ofxCvHaarFinder finder;
-    
-    ofImage mask;
     
     bool flipVert;
     bool flipHoriz;
 
-    ofxSyphonServer mainOutputSyphonServer;
+    ofxSyphonServer mainOutputSyphonServer1;
+    ofxSyphonServer mainOutputSyphonServer2;
 };

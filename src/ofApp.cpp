@@ -42,11 +42,24 @@ void ofApp::setup(){
     img.mirror(flipVert, flipHoriz);
     finder.findHaarObjects(img);
     
-    // load mask image
-    mask.loadImage("chimp.png");
+    // load mask images
+    dir.allowExt("png");
+    dir.listDir("masks");
+    dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
+    
+    //allocate the vector to have as many ofImages as masks
+    if( dir.size() ){
+        masks.assign(dir.size(), ofImage());
+    }
+    
+    // you can now iterate through the files and load them into the ofImage vector
+    for(int i = 0; i < (int)dir.size(); i++){
+        masks[i].loadImage(dir.getPath(i));
+    }
     
     
-    mainOutputSyphonServer.setName("Party Animals Main Output");
+    mainOutputSyphonServer1.setName("Party Animals Main Output 1");
+    mainOutputSyphonServer2.setName("Party Animals Main Output 2");
 }
 
 //--------------------------------------------------------------
@@ -69,11 +82,12 @@ void ofApp::draw(){
     
     for(unsigned int i = 0; i < finder.blobs.size(); i++) {
         ofRectangle cur = finder.blobs[i].boundingRect;
-        mask.draw(ofMap(cur.x, 0, camWidth, 0, ofGetWidth()), ofMap(cur.y, 0, camHeight, 0, ofGetHeight()),
+        masks[0].draw(ofMap(cur.x, 0, camWidth, 0, ofGetWidth()), ofMap(cur.y, 0, camHeight, 0, ofGetHeight()),
                   ofMap(cur.width, 0, camWidth, 0, ofGetWidth()), ofMap(cur.height, 0, camHeight, 0, ofGetHeight()));
     }
     
-    mainOutputSyphonServer.publishScreen();
+    mainOutputSyphonServer1.publishScreen();
+    mainOutputSyphonServer2.publishScreen();
 }
 
 
