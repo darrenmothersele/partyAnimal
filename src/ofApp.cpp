@@ -3,14 +3,17 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    camWidth  = 320;
-    camHeight = 240;
+    // native res of camera = 1280 x 720
+    
+    camFrameRate = 30;
+    camWidth  = 640;
+    camHeight = 360;
     screenWidth = ofGetWidth();
     screenHeight = ofGetHeight();
-    
+
     flipVert = false;
     flipHoriz = true;
-    
+
     // list video devices to debug console
     // use this to find correct ID for video grabber
     /*
@@ -24,19 +27,39 @@ void ofApp::setup(){
         }
     }
     */
-    
+
     // setup grabber on device 0
     vidGrabber.setDeviceID(0);
-    vidGrabber.setDesiredFrameRate(60);
+    vidGrabber.setDesiredFrameRate(camFrameRate);
     vidGrabber.initGrabber(camWidth,camHeight);
     ofSetVerticalSync(true);
-    
+
     // setup face finder with settings from xml file
     finder.setup("haarcascade_frontalface_default.xml");
+
+    // grab first frame
+    img.setFromPixels(vidGrabber.getPixelsRef());
+    img.mirror(flipVert, flipHoriz);
+    finder.findHaarObjects(img);
     
-    // load mask image
-    mask.loadImage("mask0.png");
-   
+    // load mask images
+    dir.allowExt("png");
+    dir.listDir("masks");
+    dir.sort(); // in linux the file system doesn't return file lists ordered in alphabetical order
+    
+    //allocate the vector to have as many ofImages as masks
+    if( dir.size() ){
+        masks.assign(dir.size(), ofImage());
+    }
+    
+    // you can now iterate through the files and load them into the ofImage vector
+    for(int i = 0; i < (int)dir.size(); i++){
+        masks[i].loadImage(dir.getPath(i));
+    }
+    
+    
+    mainOutputSyphonServer1.setName("Party Animals Main Output 1");
+    mainOutputSyphonServer2.setName("Party Animals Main Output 2");
 }
 
 //--------------------------------------------------------------
@@ -95,6 +118,9 @@ void ofApp::draw(){
     }
     
     smoothingIndex = (smoothingIndex + 1) % smoothingMax;
+    
+    mainOutputSyphonServer1.publishScreen();
+    mainOutputSyphonServer2.publishScreen();
 }
 
 
@@ -141,6 +167,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
