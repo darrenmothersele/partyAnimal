@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxCvHaarFinder.h"
+#include "ofxSyphon.h"
 
 class ofApp : public ofBaseApp{
 
@@ -22,6 +23,7 @@ class ofApp : public ofBaseApp{
     
     ofVideoGrabber 		vidGrabber;
     
+    int camFrameRate;
     int camWidth;
     int camHeight;
     int screenWidth;
@@ -34,5 +36,6 @@ class ofApp : public ofBaseApp{
     
     bool flipVert;
     bool flipHoriz;
-    
+
+    ofxSyphonServer mainOutputSyphonServer;
 };

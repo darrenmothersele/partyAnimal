@@ -3,8 +3,11 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    camWidth  = 320;
-    camHeight = 240;
+    // native res of camera = 1280 x 720
+    
+    camFrameRate = 30;
+    camWidth  = 640;
+    camHeight = 360;
     screenWidth = ofGetWidth();
     screenHeight = ofGetHeight();
     
@@ -27,7 +30,7 @@ void ofApp::setup(){
     
     // setup grabber on device 0
     vidGrabber.setDeviceID(0);
-    vidGrabber.setDesiredFrameRate(60);
+    vidGrabber.setDesiredFrameRate(camFrameRate);
     vidGrabber.initGrabber(camWidth,camHeight);
     ofSetVerticalSync(true);
     
@@ -40,8 +43,10 @@ void ofApp::setup(){
     finder.findHaarObjects(img);
     
     // load mask image
-    mask.loadImage("mask2.png");
+    mask.loadImage("chimp.png");
     
+    
+    mainOutputSyphonServer.setName("Party Animals Main Output");
 }
 
 //--------------------------------------------------------------
@@ -63,11 +68,12 @@ void ofApp::draw(){
     img.draw(0, 0, ofGetWidth(), ofGetHeight());
     
     for(unsigned int i = 0; i < finder.blobs.size(); i++) {
-
         ofRectangle cur = finder.blobs[i].boundingRect;
         mask.draw(ofMap(cur.x, 0, camWidth, 0, ofGetWidth()), ofMap(cur.y, 0, camHeight, 0, ofGetHeight()),
                   ofMap(cur.width, 0, camWidth, 0, ofGetWidth()), ofMap(cur.height, 0, camHeight, 0, ofGetHeight()));
     }
+    
+    mainOutputSyphonServer.publishScreen();
 }
 
 
