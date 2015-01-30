@@ -1,11 +1,14 @@
 #include "ofApp.h"
 
+int numMasks;
+int maskOffset;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
     
     // native res of camera = 1280 x 720
     
-    camFrameRate = 30;
+    camFrameRate = 60;
     camWidth  = 640;
     camHeight = 360;
     screenWidth = ofGetWidth();
@@ -52,8 +55,11 @@ void ofApp::setup(){
         masks.assign(dir.size(), ofImage());
     }
     
+    numMasks = (int)dir.size();
+    maskOffset = rand() % numMasks;
+    
     // you can now iterate through the files and load them into the ofImage vector
-    for(int i = 0; i < (int)dir.size(); i++){
+    for(int i = 0; i < numMasks; i++){
         masks[i].loadImage(dir.getPath(i));
     }
     
@@ -75,7 +81,7 @@ void ofApp::update(){
 }
 
 const int maxFaces = 5;
-const int smoothingMax = 4;
+const int smoothingMax = 3;
 bool sampleExists[maxFaces][smoothingMax];
 ofRectangle smoothingSamples[maxFaces][smoothingMax];
 int smoothingIndex = 0;
@@ -88,15 +94,21 @@ void ofApp::draw(){
     // draw image to fit the whole screen
     img.draw(0, 0, ofGetWidth(), ofGetHeight());
     
-    for(unsigned int faceIndex = 0; faceIndex < finder.blobs.size() && faceIndex < maxFaces; faceIndex++) {
+    for (int faceIndex = 0; faceIndex < maxFaces; faceIndex++) {
         
-        smoothingSamples[faceIndex][smoothingIndex] = finder.blobs[faceIndex].boundingRect;
-        sampleExists[faceIndex][smoothingIndex] = true;
+        // create samples
+        if (faceIndex < finder.blobs.size() ) {
+            smoothingSamples[faceIndex][smoothingIndex] = finder.blobs[faceIndex].boundingRect;
+            sampleExists[faceIndex][smoothingIndex] = true;
+        } else {
+            sampleExists[faceIndex][smoothingIndex] = false;
+        }
         
+        // create average of samples
         int x = 0, y = 0, w = 0, h = 0, n = 0;
         
         for (int i = 0; i < smoothingMax; i++) {
-            if (sampleExists[i]) {
+            if (sampleExists[faceIndex][i]) {
                 ofRectangle cur = smoothingSamples[faceIndex][i];
                 x = x + cur.x;
                 y = y + cur.y;
@@ -106,7 +118,9 @@ void ofApp::draw(){
             }
         }
         
-        if (n > 0) {
+        ofImage mask =  masks[(maskOffset + faceIndex) % numMasks];
+        
+        if (n > smoothingMax - 1) {
             x = x / n;
             y = y / n;
             w = w / n;
@@ -114,6 +128,8 @@ void ofApp::draw(){
             
             mask.draw(ofMap(x, 0, camWidth, 0, ofGetWidth()), ofMap(y, 0, camHeight, 0, ofGetHeight()),
                   ofMap(w, 0, camWidth, 0, ofGetWidth()), ofMap(h, 0, camHeight, 0, ofGetHeight()));
+        } else {
+            mask.draw(0,0,0,0);
         }
     }
     

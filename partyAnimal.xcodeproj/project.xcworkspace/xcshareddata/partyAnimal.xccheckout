@@ -12,6 +12,8 @@
 	<dict>
 		<key>45E01E14DA6292962B1BE32FECD4F15ADA169E77</key>
 		<string>github.com:darrenmothersele/partyAnimal.git</string>
+		<key>F4CCB893AFADB97238A965FD2F28717F1CAAE613</key>
+		<string>https://github.com/astellato/ofxSyphon.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>partyAnimal.xcodeproj</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>45E01E14DA6292962B1BE32FECD4F15ADA169E77</key>
 		<string>../..</string>
+		<key>F4CCB893AFADB97238A965FD2F28717F1CAAE613</key>
+		<string>../../../addons/ofxSyphon</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:darrenmothersele/partyAnimal.git</string>
@@ -28,6 +32,14 @@
 	<string>45E01E14DA6292962B1BE32FECD4F15ADA169E77</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F4CCB893AFADB97238A965FD2F28717F1CAAE613</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxSyphon</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
